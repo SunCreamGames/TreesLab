@@ -5,206 +5,117 @@ using System.Text;
 
 namespace TreesLab
 {
-    class Tree
-    {
-        Hashtable hashtable;
-        Node top;
-        public Node Top { get { return top; } }
-        public Tree(Hashtable hashtable)
-        {
-            Node top = new Node(hashtable, null, null, -1);
-            this.top = top;
-            this.hashtable = hashtable;
-        }
+ 
         public class Node
         {
-            Hashtable hashtable;
-            int type;
-            string data;
-            Node parent;
-            public List<Node> Nodes { get; set; }
-            public Node(Hashtable hashtable, Node parent, string data, int type)
+        Hashtable hashtable;
+        Node parent;
+        int type;
+        string data;
+        public enum Operation
             {
-                this.Nodes = new List<Node>();
-                this.hashtable = hashtable;
-                this.parent = parent;
-                this.data = data;
-                this.type = type;
+                Operator, Setter, Data, Empty
             }
+            public Node(Hashtable hashtable, Operation op, string data, Node parent)
+            {
+            this.type = (int)op;
+            this.hashtable = hashtable;
+            this.parent = parent;
+            this.data = data;
+            Nodes = new List<Node>();
+            }
+           public List<Node> Nodes { get; set; }
+
             public string Visit()
             {
-                double p, a;
-                switch (type)
+                switch (this.type)
                 {
-                    case 0:     // name of variable, key for hash
-                            return data;
-                    case 1:
-                        // "=" 
-                        //  1)visit left for key 
-                        //  2)visit right for value
-                        //  3)hashTab[1] = 2;
-                        string key = Nodes[0].Visit();
-                        double value = Convert.ToDouble(Nodes[1].Visit());
-                        if (hashtable.ContainsKey(key))
-                        {
-                            hashtable[key] = value;
-                        }
-                        else
-                        {
-                            hashtable.Add(key, value);
-                        }
-                        return null;
-                    case 2:
-                        // Operations : + - * / ^ sqrt()
+                    case (int)Operation.Operator:
+                        double a = Convert.ToDouble(Nodes[0].Visit());
+                        double b = Convert.ToDouble(Nodes[1].Visit());
                         switch (data)
                         {
+                            case "+":
+                                return (a + b).ToString();
 
                             case "-":
-                                a = Convert.ToDouble(Nodes[0].Visit());
-                                p = Convert.ToDouble(Nodes[1].Visit());
-                                return (a - p).ToString();
-                            case "+":
-                                a = Convert.ToDouble(Nodes[0].Visit());
-                                p = Convert.ToDouble(Nodes[1].Visit());
-                                return (a + p).ToString();
-                            case "*":
-                                a = Convert.ToDouble(Nodes[0].Visit());
-                                p = Convert.ToDouble(Nodes[1].Visit());
-                                return (a * p).ToString();
-                            case "/":
-                                a = Convert.ToDouble(Nodes[0].Visit());
-                                p = Convert.ToDouble(Nodes[1].Visit());
-                                return (a / p).ToString();
-                            default:
-                                a = Convert.ToDouble(Nodes[0].Visit());
-                                p = Convert.ToDouble(Nodes[1].Visit());
-                                return (MathF.Pow((float)a, (float)p)).ToString();
+                                return (a - b).ToString();
 
+                            case "/":
+                                return (a / b).ToString();
+
+                            case "*":
+                                return (a * b).ToString();
+
+                            default:
+                                return (Math.Pow(a, b)).ToString();
                         }
-                    case 3:
-                        // If
-                        if (Nodes[0].Visit() != "0")
+                    case (int)Operation.Setter:
+                        string s = Nodes[0].Visit();
+                        if (hashtable.ContainsKey(s))
                         {
-                            Nodes[1].Visit();
+                            hashtable[s] = Nodes[1].Visit();
                         }
                         else
                         {
-                            Nodes[2].Visit();
+                            hashtable.Add(s, Nodes[1].Visit());
                         }
-                        return null;
-                    case 4:
-                        // Condition
-                        switch (data)
-                        {
-                            case "==":
-                                a = Convert.ToDouble(Nodes[0].Visit());
-                                p = Convert.ToDouble(Nodes[1].Visit());
-                                if (a == p)
-                                {
-                                    return "1";
-                                }
-                                else
-                                {
-                                    return "0";
-                                }
-                            case "!=":
-                                a = Convert.ToDouble(Nodes[0].Visit());
-                                p = Convert.ToDouble(Nodes[1].Visit());
-                                if (a != p)
-                                {
-                                    return "1";
-                                }
-                                else
-                                {
-                                    return "0";
-                                }
-                            case ">=":
-                                a = Convert.ToDouble(Nodes[0].Visit());
-                                p = Convert.ToDouble(Nodes[1].Visit());
-                                if (a >= p)
-                                {
-                                    return "1";
-                                }
-                                else
-                                {
-                                    return "0";
-                                }
-                            case "<=":
-                                a = Convert.ToDouble(Nodes[0].Visit());
-                                p = Convert.ToDouble(Nodes[1].Visit());
-                                if (a <= p)
-                                {
-                                    return "1";
-                                }
-                                else
-                                {
-                                    return "0";
-                                }
-                            case ">":
-                                a = Convert.ToDouble(Nodes[0].Visit());
-                                p = Convert.ToDouble(Nodes[1].Visit());
-                                if (a > p)
-                                {
-                                    return "1";
-                                }
-                                else
-                                {
-                                    return "0";
-                                }
-                            case "<":
-                                a = Convert.ToDouble(Nodes[0].Visit());
-                                p = Convert.ToDouble(Nodes[1].Visit());
-                                if (a < p)
-                                {
-                                    return "1";
-                                }
-                                else
-                                {
-                                    return "0";
-                                }
+                        return "";
+                    case (int)Operation.Empty:
 
-                            case "||":
-                                a = Convert.ToDouble(Nodes[0].Visit());
-                                p = Convert.ToDouble(Nodes[1].Visit());
-                                if (a != 0 || p != 0)
-                                {
-                                    return "1";
-                                }
-                                else
-                                {
-                                    return "0";
-                                }
-                            default:
-                                a = Convert.ToDouble(Nodes[0].Visit());
-                                p = Convert.ToDouble(Nodes[1].Visit());
-                                if (a != 0 && p != 0)
-                                {
-                                    return "1";
-                                }
-                                else
-                                {
-                                    return "0";
-                                }
-                        }
-                    case 5:
-                        // If
-                        while (Nodes[0].Visit() != "0")
+                        for (int i = 0; i < Nodes.Count - 1; i++)
                         {
-                            Nodes[1].Visit();
+                            Nodes[i].Visit();
                         }
-                        return null;
+                        return Nodes[Nodes.Count - 1].Visit();
+                    case (int)Operation.Data:
+                        {
+                            if (hashtable.ContainsKey(data))
+                            {
+                                return hashtable[data].ToString();
+                            }
+                            else
+                            {
+                                return data;
+                            }
+                        }
                     default:
-                        Nodes[0].Visit();
-                        return Nodes[1].Visit();
+                        return "";
+                }
+            }   
+
+        public void BuildTree(string problem)
+        {
+            Node pointer = this;
+            string[] tokens = problem.Split(" ", StringSplitOptions.RemoveEmptyEntries);
+            for (int i = tokens.Length-1; i >= 0; i--)
+            {
+                switch (tokens[i])
+                {
+                    case "+": case "*": case "-": case "/": case "^":
+                        Node op = new Node(hashtable, Operation.Operator, tokens[i], pointer);
+                        if (pointer.parent != null)
+                        {
+                            pointer.Nodes.Insert(0, op);
+                        }
+                        else
+                        {
+                            pointer.Nodes.Add(op);
+                        }
+                        pointer = op;
+                        break;
+                    default:
+                        pointer.Nodes.Insert(0,new Node(hashtable, Operation.Data, tokens[i], pointer));
+                        break;
+                }
+                while (pointer.Nodes.Count > 1 && pointer.parent != null)
+                {
+                    pointer = pointer.parent;
                 }
             }
-
-            public Node AddNode(int type, string data)
-            {
-                Node addedNode = new Node(hashtable, this, data, type);
-                Nodes.Add(addedNode);
-                return addedNode;
-            }
         }
-    }
+       
+        
+        }
+    
 }

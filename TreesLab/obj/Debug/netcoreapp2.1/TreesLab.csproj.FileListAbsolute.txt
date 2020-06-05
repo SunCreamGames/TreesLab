@@ -1,0 +1,11 @@
+C:\Users\Богдан\source\repos\TreesLab\TreesLab\bin\Debug\netcoreapp2.1\TreesLab.deps.json
+C:\Users\Богдан\source\repos\TreesLab\TreesLab\bin\Debug\netcoreapp2.1\TreesLab.runtimeconfig.json
+C:\Users\Богдан\source\repos\TreesLab\TreesLab\bin\Debug\netcoreapp2.1\TreesLab.runtimeconfig.dev.json
+C:\Users\Богдан\source\repos\TreesLab\TreesLab\bin\Debug\netcoreapp2.1\TreesLab.dll
+C:\Users\Богдан\source\repos\TreesLab\TreesLab\bin\Debug\netcoreapp2.1\TreesLab.pdb
+C:\Users\Богдан\source\repos\TreesLab\TreesLab\obj\Debug\netcoreapp2.1\TreesLab.csprojAssemblyReference.cache
+C:\Users\Богдан\source\repos\TreesLab\TreesLab\obj\Debug\netcoreapp2.1\TreesLab.csproj.CoreCompileInputs.cache
+C:\Users\Богдан\source\repos\TreesLab\TreesLab\obj\Debug\netcoreapp2.1\TreesLab.AssemblyInfoInputs.cache
+C:\Users\Богдан\source\repos\TreesLab\TreesLab\obj\Debug\netcoreapp2.1\TreesLab.AssemblyInfo.cs
+C:\Users\Богдан\source\repos\TreesLab\TreesLab\obj\Debug\netcoreapp2.1\TreesLab.dll
+C:\Users\Богдан\source\repos\TreesLab\TreesLab\obj\Debug\netcoreapp2.1\TreesLab.pdb
