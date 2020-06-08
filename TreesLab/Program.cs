@@ -12,35 +12,26 @@ namespace TreesLab
 
         static void Main(string[] args)
         {
-            //StreamReader reader = new StreamReader("C:\\Users\\Богдан\\Desktop\\text.txt");
-            string problem = Console.ReadLine();
             string s = "notNullString";
             Hashtable table = new Hashtable();
-            Node main = new Node(table, Node.Operation.Empty, "",null);
-            Node pointer = main;
+            Tree tree = new Tree(table);
+            List<string> input = new List<string>();
             while (s != "")
             {
                 s = Console.ReadLine();
-                if (s != "") {
-                    s = s.Replace("=", " ");
-                    s = s.Replace(";", " ");
-                    string[] parts = s.Split(" ", StringSplitOptions.RemoveEmptyEntries);
-                    Node setter = new Node(table, Node.Operation.Setter, "=", main);
-                    Node a = new Node(table, Node.Operation.Data, parts[0], setter);
-                    Node b = new Node(table, Node.Operation.Data, parts[1], setter);
-                    setter.Nodes.Add(a);
-                    setter.Nodes.Add(b);
-                    pointer.Nodes.Add(setter);
-                }  }
-            problem = CreatePostfixNotation(problem);
-            Console.WriteLine(problem);
-            //reader.Close();
-            main.BuildTree(problem);
-            Console.WriteLine(main.Visit());
+                input.Add(s);
+            }
+            for (int i = 0; i < input.Count-1; i++)
+            {
+                input[i].Replace(";", " ");
+                tree.topNode.BuildTree(CreatePostfixNotation(input[i]));
+            }
+            Console.WriteLine(tree.Calculate());
         }
-        static string CreatePostfixNotation(string input)
+        public static string CreatePostfixNotation(string input)
         {
             input = input.Replace("+"," + ");
+            input = input.Replace("="," = ");
             input = input.Replace("-"," - ");
             input = input.Replace("/"," / ");
             input = input.Replace("*"," * ");
@@ -119,6 +110,23 @@ namespace TreesLab
                         }
                         break;
                     case "+":
+                        result += " ";
+                        while (stack.Count > 0)
+                        {
+                            if (stack.Peek() == "^" || stack.Peek() == "/" || stack.Peek() == "*" || stack.Peek() == "-" || stack.Peek() == "+" || stack.Peek() == "!")
+                            {
+                                result += " ";
+                                result += stack.Pop().ToString();
+                                result += " ";
+                            }
+                            else
+                            {
+                                break;
+                            }
+                        }
+                        stack.Push(OpAndOp[i]);
+                        break;
+                    case "=":
                         result += " ";
                         while (stack.Count > 0)
                         {
